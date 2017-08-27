@@ -16,8 +16,6 @@ var spotifyClient = new spotify({
 	,secret: keys.spotifyKeys.secret
 }); 
 console.log(keys.omdbKey);
-
-// run(); CAN DELETE?
 // FUNCTIONS
 function myTweets(){
 	client.get("statuses/user_timeline",{screen_name:"captianredbear1"}, function(error, tweets, response){
@@ -62,7 +60,7 @@ function findMovie(movie){
 		run();
 	});
 }
-function doWhatItSays(){
+function exeChoice(){
 	fs.readFile("../log.txt","utf8",function(error,data){
 		var temp = data.split(",");
 		if (temp[0] === "Find my tweets"){
@@ -74,9 +72,6 @@ function doWhatItSays(){
 		else if (temp[0] === "Find a movie"){
 			findMovie(temp[1]);
 		}
-		else {
-			console.log("invalid input."); run();
-		}
 	});
 }
 function run(){
@@ -84,7 +79,7 @@ function run(){
 		{
 			message: "What would you like to do?"
 			,type: "list"
-			,choices:["Find my tweets","Find a song","Find a movie","Do-what-it-says","EXIT"]
+			,choices:["Find my tweets","Find a song","Find a movie","EXIT"]
 			,name:"function"
 		}
 	]).then(function(answers){
@@ -120,7 +115,7 @@ function run(){
 			});
 		}
 		else if (answers.function === "Do-what-it-says"){
-			doWhatItSays();
+			exeChoice();
 		}
 		else if (answers.function === "EXIT"){
 			console.log("Thank you. Come again.");
