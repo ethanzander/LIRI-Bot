@@ -1,0 +1,29 @@
+{
+  "name": "liri-bot",
+  "version": "1.0.0",
+  "description": "not Siri but Liri",
+  "main": "liri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanzander/LIRI-Bot.git"
+  },
+  "keywords": [
+    "liri",
+    "bot"
+  ],
+  "author": "Ethan Zander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethanzander/LIRI-Bot/issues"
+  },
+  "homepage": "https://github.com/ethanzander/LIRI-Bot#readme",
+  "dependencies": {
+    "inquirer": "^3.2.2",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.81.0",
+    "twitter": "^1.7.1"
+  }
+}

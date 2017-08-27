@@ -63,7 +63,7 @@ function findMovie(movie){
 	});
 }
 function doWhatItSays(){
-	fs.readFile("../random.txt","utf8",function(error,data){
+	fs.readFile("../log.txt","utf8",function(error,data){
 		var temp = data.split(",");
 		if (temp[0] === "Find my tweets"){
 			myTweets();
@@ -88,15 +88,21 @@ function run(){
 			,name:"function"
 		}
 	]).then(function(answers){
-		if(answers.function === "Find my tweets"){myTweets();}
-		else if(answers.function === "Find a song"){
+		if(answers.function === "Find my tweets"){
+			myTweets();
+		}
+		else if (answers.function === "Find a song"){
 			inquire.prompt([{
 				message:"What song are we Spotifying?"
 				,type: "input"
 				,name: "song"
 			}]).then(function(subAnswer){
-				if(subAnswer.length > 0){spotifyThisSong(subAnswer.song);}
-				else{spotifyThisSong("Pink Floyd, The Dark Side Of The Moon");}
+				if (subAnswer.length > 0){
+					spotifyThisSong(subAnswer.song);
+				}
+				else {
+					spotifyThisSong("Pink Floyd, The Dark Side Of The Moon");
+				}
 			});
 		}
 		else if(answers.function === "Find a movie"){
@@ -105,12 +111,20 @@ function run(){
 				,type: "input"
 				,name: "movie"
 			}]).then(function(subAnswer){
-				if(subAnswer.length > 0){findMovie(subAnswer.movie);}
-				else{findMovie("Tommy Boy");}
+				if (subAnswer.length > 0){
+					findMovie(subAnswer.movie);
+				}
+				else {
+					findMovie("Tommy Boy");
+				}
 			});
 		}
-		else if(answers.function === "Do-what-it-says"){doWhatItSays();}
-		if(answers.function === "EXIT"){console.log("Thank you. Come again.");}
+		else if (answers.function === "Do-what-it-says"){
+			doWhatItSays();
+		}
+		else if (answers.function === "EXIT"){
+			console.log("Thank you. Come again.");
+		}
 	});
 }
 run();
