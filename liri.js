@@ -18,7 +18,7 @@ var spotifyClient = new spotify({
 var commandInput;
 var serachInput;
 // FUNCTIONS
-function myTweets(){
+function showMyTweets(){
 	client.get("statuses/user_timeline",{screen_name:"captianredbear1"}, function(error, tweets, response){
 		if(error){console.log(error);}
 		else{
@@ -65,7 +65,7 @@ function exeChoice(){
 	fs.readFile("../log.txt","utf8",function(error,data){
 		var temp = data.split(",");
 		if (temp[0] === "Find my tweets"){
-			myTweets();
+			showMyTweets();
 		}
 		else if (temp[0] === "Find a song"){
 			spotifyThisSong(temp[1]);
