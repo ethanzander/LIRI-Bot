@@ -15,51 +15,11 @@ var spotifyClient = new spotify({
 	 id: keys.spotifyKeys.id
 	,secret: keys.spotifyKeys.secret
 }); 
-console.log(keys.omdbKey);
+var commandInput = process.argv[2];
+var serachInput = process.argv[3];
+var ansToString = '';
+
 // FUNCTIONS
-function myTweets(){
-	client.get("statuses/user_timeline",{screen_name:"captianredbear1"}, function(error, tweets, response){
-		if(error){console.log(error);}
-		else{
-			for (var i = 0; i < 20; i++) {
-				if(i < tweets.length){
-					console.log("--------------------------------------------------------");
-					console.log(tweets[i].created_at);
-					console.log(tweets[i].text);
-					console.log("--------------------------------------------------------");
-				}
-			}
-		}
-		run();
-	});
-}
-function spotifyThisSong(song){
-	spotifyClient.search({ type:"track", query: song, limit:"1"},function(err, data){
-		console.log("Artist: " + data.tracks.items[0].artists[0].name);
-		console.log("Album: " + data.tracks.items[0].album.name);
-		console.log("Song: " + data.tracks.items[0].name);
-		console.log("Preview: " + data.tracks.items[0].preview_url);
-		run();
-	})
-}
-function findMovie(movie){
-	var url = "http://www.omdbapi.com/?t=" + movie + "&apikey=" + keys.omdbKey
-	request(url,function(error,response,body){
-		if(error){console.log(error);}
-		else if(response.statusCode === 200){
-			var data = JSON.parse(body);
-			console.log("Movie: " + data.Title);
-			console.log("Released: " + data.Year);
-			console.log("IMDB Rating: " + data.Ratings[0].Value);
-			console.log("Rotton Tomatoes Rating: " + data.Ratings[1].Value);
-			console.log("Produced in: " + data.Country);
-			console.log("Language: " + data.Language);
-			console.log("Plot: " + data.Plot);
-			console.log("Actors: " + data.Actors);
-		}
-		run();
-	});
-}
 function exeChoice(){
 	fs.readFile("../log.txt","utf8",function(error,data){
 		var temp = data.split(",");
@@ -74,7 +34,7 @@ function exeChoice(){
 		}
 	});
 }
-function run(){
+function start(){
 	inquire.prompt([
 		{
 			message: "What would you like to do?"
@@ -100,7 +60,7 @@ function run(){
 				}
 			});
 		}
-		else if(answers.function === "Find a movie"){
+		else if (answers.function === "Find a movie"){
 			inquire.prompt([{
 				message:"What is the title of the movie?"
 				,type: "input"
@@ -114,12 +74,53 @@ function run(){
 				}
 			});
 		}
-		else if (answers.function === "Do-what-it-says"){
-			exeChoice();
-		}
-		else if (answers.function === "EXIT"){
-			console.log("Thank you. Come again.");
-		}
 	});
 }
-run();
+function myTweets(){
+	client.get("statuses/user_timeline",{screen_name:"captianredbear1"}, function(error, tweets, response){
+		if(error){console.log(error);}
+		else{
+			for (var i = 0; i < 20; i++) {
+				if(i < tweets.length){
+					console.log("--------------------------------------------------------");
+					console.log(tweets[i].created_at);
+					console.log(tweets[i].text);
+					console.log("--------------------------------------------------------");
+				}
+			}
+		}
+		reStart();
+	});
+}
+function spotifyThisSong(song){
+	spotifyClient.search({ type:"track", query: song, limit:"1"},function(err, data){
+		console.log("Artist: " + data.tracks.items[0].artists[0].name);
+		console.log("Album: " + data.tracks.items[0].album.name);
+		console.log("Song: " + data.tracks.items[0].name);
+		console.log("Preview: " + data.tracks.items[0].preview_url);
+		reStart();
+	})
+}
+function findMovie(movie){
+	var url = "http://www.omdbapi.com/?t=" + movie + "&apikey=" + keys.omdbKey
+	request(url,function(error,response,body){
+		if(error){console.log(error);}
+		else if(response.statusCode === 200){
+			var data = JSON.parse(body);
+			console.log("Movie: " + data.Title);
+			console.log("Released: " + data.Year);
+			console.log("IMDB Rating: " + data.Ratings[0].Value);
+			console.log("Rotton Tomatoes Rating: " + data.Ratings[1].Value);
+			console.log("Produced in: " + data.Country);
+			console.log("Language: " + data.Language);
+			console.log("Plot: " + data.Plot);
+			console.log("Actors: " + data.Actors);
+		}
+		reStart();
+	});
+}
+function reStart(){
+	start();
+}
+//APP LOGIC
+start();
