@@ -15,67 +15,9 @@ var spotifyClient = new spotify({
 	 id: keys.spotifyKeys.id
 	,secret: keys.spotifyKeys.secret
 }); 
-var commandInput = process.argv[2];
-var serachInput = process.argv[3];
-var ansToString = '';
-
+var commandInput;
+var serachInput;
 // FUNCTIONS
-function exeChoice(){
-	fs.readFile("../log.txt","utf8",function(error,data){
-		var temp = data.split(",");
-		if (temp[0] === "Find my tweets"){
-			myTweets();
-		}
-		else if (temp[0] === "Find a song"){
-			spotifyThisSong(temp[1]);
-		}
-		else if (temp[0] === "Find a movie"){
-			findMovie(temp[1]);
-		}
-	});
-}
-function start(){
-	inquire.prompt([
-		{
-			message: "What would you like to do?"
-			,type: "list"
-			,choices:["Find my tweets","Find a song","Find a movie","EXIT"]
-			,name:"function"
-		}
-	]).then(function(answers){
-		if(answers.function === "Find my tweets"){
-			myTweets();
-		}
-		else if (answers.function === "Find a song"){
-			inquire.prompt([{
-				message:"What song are we Spotifying?"
-				,type: "input"
-				,name: "song"
-			}]).then(function(subAnswer){
-				if (subAnswer.length > 0){
-					spotifyThisSong(subAnswer.song);
-				}
-				else {
-					spotifyThisSong("Pink Floyd, The Dark Side Of The Moon");
-				}
-			});
-		}
-		else if (answers.function === "Find a movie"){
-			inquire.prompt([{
-				message:"What is the title of the movie?"
-				,type: "input"
-				,name: "movie"
-			}]).then(function(subAnswer){
-				if (subAnswer.length > 0){
-					findMovie(subAnswer.movie);
-				}
-				else {
-					findMovie("Tommy Boy");
-				}
-			});
-		}
-	});
-}
 function myTweets(){
 	client.get("statuses/user_timeline",{screen_name:"captianredbear1"}, function(error, tweets, response){
 		if(error){console.log(error);}
@@ -117,6 +59,65 @@ function findMovie(movie){
 			console.log("Actors: " + data.Actors);
 		}
 		reStart();
+	});
+}
+function exeChoice(){
+	fs.readFile("../log.txt","utf8",function(error,data){
+		var temp = data.split(",");
+		if (temp[0] === "Find my tweets"){
+			myTweets();
+		}
+		else if (temp[0] === "Find a song"){
+			spotifyThisSong(temp[1]);
+		}
+		else if (temp[0] === "Find a movie"){
+			findMovie(temp[1]);
+		}
+	});
+}
+function start(){
+	inquire.prompt([
+		{
+			message: "What would you like to do?"
+			,type: "list"
+			,choices:["Find my tweets","Find a song","Find a movie","EXIT"]
+			,name:"function"
+		}
+	]).then(function(answers){
+		if(answers.function === "Find my tweets"){
+			myTweets();
+		}
+		else if (answers.function === "Find a song"){
+			inquire.prompt([{
+				message:"What song are we Spotifying?"
+				,type: "input"
+				,name: "song"
+			}]).then(function(subAnswer){
+				if (subAnswer.length > 0){
+					spotifyThisSong(subAnswer.song);
+				}
+				else {
+					spotifyThisSong("Pink Floyd, The Dark Side Of The Moon");
+				}
+			});
+		}
+		else if(answers.function === "Find a movie"){
+			inquire.prompt([{
+				message:"What is the title of the movie?"
+				,type: "input"
+				,name: "movie"
+			}]).then(function(subAnswer){
+				if (subAnswer.length > 0){
+					findMovie(subAnswer.movie);
+				}
+				else {
+					findMovie("Tommy Boy");
+				}
+			});
+		}
+		else if (answers.function === "EXIT"){
+			return;
+		}
 	});
 }
 function reStart(){
